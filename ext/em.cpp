@@ -463,9 +463,9 @@ bool EventMachine_t::_RunEpollOnce()
 		//  descriptor is closed anyway. This is different from the case where
 		//  the socket has already been closed but the descriptor in the ED object
 		//  hasn't yet been set to INVALID_SOCKET.
-		int i, j;
+		int i;
 		int nSockets = Descriptors.size();
-		for (i=0, j=0; i < nSockets; i++) {
+		for (i=0; i < nSockets; i++) {
 			EventableDescriptor *ed = Descriptors[i];
 			assert (ed);
 			if (ed->ShouldDelete()) {
@@ -482,13 +482,13 @@ bool EventMachine_t::_RunEpollOnce()
 				}
 
 				ModifiedDescriptors.erase (ed);
+				Descriptors[i] = Descriptors[Descriptors.size() - 1];
+				Descriptors.pop_back();
+				i--; nSockets--;
+				
 				delete ed;
 			}
-			else
-				Descriptors [j++] = ed;
 		}
-		while ((size_t)j < Descriptors.size())
-			Descriptors.pop_back();
 
 	}
 
@@ -556,20 +556,19 @@ bool EventMachine_t::_RunKqueueOnce()
 		// rather than traversing the whole list.
 		// In kqueue, closing a descriptor automatically removes its event filters.
 
-		int i, j;
+		int i;
 		int nSockets = Descriptors.size();
-		for (i=0, j=0; i < nSockets; i++) {
+		for (i=0; i < nSockets; i++) {
 			EventableDescriptor *ed = Descriptors[i];
 			assert (ed);
 			if (ed->ShouldDelete()) {
 				ModifiedDescriptors.erase (ed);
 				delete ed;
+				Descriptors[i] = Descriptors[Descriptors.size() - 1]; // replace our 'gone' one with a live one
+				i--; nSockets--;
+				Descriptors.pop_back();
 			}
-			else
-				Descriptors [j++] = ed;
 		}
-		while ((size_t)j < Descriptors.size())
-			Descriptors.pop_back();
 
 	}
 
@@ -794,18 +793,19 @@ bool EventMachine_t::_RunSelectOnce()
 
 	{ // cleanup dying sockets
 		// vector::pop_back works in constant time.
-		int i, j;
+		int i;
 		int nSockets = Descriptors.size();
-		for (i=0, j=0; i < nSockets; i++) {
+		for (i=0; i < nSockets; i++) {
 			EventableDescriptor *ed = Descriptors[i];
 			assert (ed);
 			if (ed->ShouldDelete())
+			{
 				delete ed;
-			else
-				Descriptors [j++] = ed;
+				Descriptors[i] = Descriptors[Descriptors.size() - 1];
+				Descriptors.pop_back();
+				i--; nSockets--;
+			}
 		}
-		while ((size_t)j < Descriptors.size())
-			Descriptors.pop_back();
 
 	}
 
