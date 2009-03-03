@@ -1,0 +1,31 @@
+=== Attach Example
+
+  module SimpleHttpClient
+    def initialize sock
+      @sock = sock
+    end
+
+    def notify_readable
+      header = @sock.readline
+
+      if header == "\r\n"
+        # detach returns the file descriptor number (fd == @sock.fileno)
+        fd = detach
+      end
+    rescue EOFError
+      detach
+    end
+
+    def unbind
+      EM.next_tick do
+        # socket is detached from the eventloop, but still open
+        data = @sock.read
+      end
+    end
+  end
+
+  EM.run{
+    $sock = TCPSocket.new('site.com', 80)
+    $sock.write("GET / HTTP/1.0\r\n\r\n")
+    EM.attach $sock, SimpleHttpClient, $sock
+  }

@@ -88,7 +88,7 @@ Spec = Gem::Specification.new do |s|
 
   s.has_rdoc          = true
   s.rdoc_options      = %w(--title EventMachine --main docs/README --line-numbers -x lib/eventmachine_version -x lib/emva -x lib/evma/ -x lib/pr_eventmachine -x lib/jeventmachine)
-  s.extra_rdoc_files  = Dir['docs/*']
+  s.extra_rdoc_files  = Dir['docs/*'] + ['README.rdoc']
 
   s.files             = `git ls-files`.split("\n")
 

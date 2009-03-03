@@ -1,0 +1,35 @@
+= Installation
+
+The preferred method for installing EventMachine is via Rubygems, however we
+also bundle setup.rb for installing EventMachine from source package.
+
+== Rubygems
+
+* gem install eventmachine
+
+== Source Package
+
+Download the source tarball, either from rubyforge or github, for example, 
+here:
+  http://github.com/eventmachine/eventmachine/downloads
+
+Unzip and untar the tarball, and enter the directory that is created:
+
+  tar zxf eventmachine-*.tgz && cd eventmachine-*
+
+In that directory, say:
+
+  ruby setup.rb
+
+(You may need to be root to execute this command.)
+
+To create documentation for EventMachine, simply type:
+
+  rdoc
+
+Rdocs will be created in subdirectory doc.
+
+Other build and installation procedures are provided in our rake tasks, for a
+full list, run rake:
+
+  rake -T

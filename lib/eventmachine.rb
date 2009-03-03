@@ -1,5 +1,10 @@
 #--
+<<<<<<< HEAD:lib/eventmachine.rb
 #
+=======
+# $Id$
+#++
+>>>>>>> stash commit for doc changes thus far:lib/eventmachine.rb
 # Author:: Francis Cianfrocca (gmail: blackhedd)
 # Homepage::  http://rubyeventmachine.com
 # Date:: 8 Apr 2006
@@ -24,7 +29,8 @@
 # 
 
 
-#-- Select in a library based on a global variable.
+#-- 
+# Select in a library based on a global variable.
 # PROVISIONALLY commented out this whole mechanism which selects
 # a pure-Ruby EM implementation if the extension is not available.
 # I expect this will cause a lot of people's code to break, as it
@@ -39,7 +45,7 @@
 # run the extension but failed to do so because of a compilation or
 # similar error. So we require either a global variable or an environment
 # string be set in order to select the pure-Ruby version.
-#
+#++
 
 
 unless defined?($eventmachine_library)
@@ -88,6 +94,7 @@ require 'shellwords'
 #-- Additional requires are at the BOTTOM of this file, because they
 #-- depend on stuff defined in here. Refactor that someday.
 
+<<<<<<< HEAD:lib/eventmachine.rb
 # == Introduction
 # EventMachine provides a fast, lightweight framework for implementing
 # Ruby programs that can use the network to communicate with other
@@ -169,6 +176,9 @@ require 'shellwords'
 # and make use of the corresponding Ruby <tt>observer</tt> package?
 # Interesting thought.
 #
+=======
+# :include: docs/INTRODUCTION.rdoc
+>>>>>>> stash commit for doc changes thus far:lib/eventmachine.rb
 module EventMachine
   class FileNotFoundException < Exception # :nodoc:
   end
@@ -200,6 +210,7 @@ module EventMachine
 	# and scheduled according to the actual events themselves. This maximizes
 	# efficiency.
 	#
+<<<<<<< HEAD:lib/eventmachine.rb
 	# === Server usage example
 	#
 	# See EventMachine.start_server
@@ -208,6 +219,8 @@ module EventMachine
 	#
 	# See EventMachine.connect
 	#
+=======
+>>>>>>> stash commit for doc changes thus far:lib/eventmachine.rb
 	#--
 	# Obsoleted the use_threads mechanism.
 	# 25Nov06: Added the begin/ensure block. We need to be sure that release_machine
@@ -320,6 +333,7 @@ module EventMachine
   # There is no built-in limit to the number of timers that can be outstanding at
   # any given time.
   #
+<<<<<<< HEAD:lib/eventmachine.rb
   # === Usage example
   #
   # This example shows how easy timers are to use. Observe that two timers are
@@ -335,6 +349,9 @@ module EventMachine
   #    EventMachine::add_timer( 10 ) { puts "Executing timer event: #{Time.now}" }
   #  }
   #
+=======
+  # :include: docs/examples/TIMERS.rdoc
+>>>>>>> stash commit for doc changes thus far:lib/eventmachine.rb
   #
   # Also see EventMachine::Timer
   #--
@@ -356,6 +373,7 @@ module EventMachine
   # This method schedules execution of the given block repeatedly, at intervals
   # of time <i>at least</i> as great as the number of seconds given in the first
   # parameter to the call.
+<<<<<<< HEAD:lib/eventmachine.rb
   # 
   # === Usage example
   #
@@ -370,6 +388,9 @@ module EventMachine
   #
   # Also see EventMachine::PeriodicTimer
   #
+=======
+  # :include: docs/examples/TIMERS.rdoc
+>>>>>>> stash commit for doc changes thus far:lib/eventmachine.rb
   def EventMachine::add_periodic_timer *args, &block
     interval = args.shift
     code = args.shift || block
@@ -401,6 +422,7 @@ module EventMachine
   # will return and program flow will resume from the statement
   # following EventMachine::run call.
   #
+<<<<<<< HEAD:lib/eventmachine.rb
   # === Usage example
   #
   #  require 'rubygems'
@@ -438,6 +460,9 @@ module EventMachine
   #  A connection has terminated.
   #  The event loop has stopped.
   #
+=======
+  # :include: docs/examples/EVENT_LOOP.rdoc
+>>>>>>> stash commit for doc changes thus far:lib/eventmachine.rb
   #
   def EventMachine::stop_event_loop
     EventMachine::stop
@@ -488,6 +513,7 @@ module EventMachine
   # can specify a different handler module and thus implement a different
   # network protocol from all the others.
   #
+<<<<<<< HEAD:lib/eventmachine.rb
   # === Usage example
   # Here is an example of a server that counts lines of input from the remote
   # peer and sends back the total number of lines received, after each line.
@@ -529,6 +555,9 @@ module EventMachine
   #  }
   #  
   #
+=======
+  # :include: docs/examples/SERVER.rdoc
+>>>>>>> stash commit for doc changes thus far:lib/eventmachine.rb
   def EventMachine::start_server server, port=nil, handler=nil, *args, &block
     
     begin
@@ -596,6 +625,7 @@ module EventMachine
   # of the handler Module. All of the details given in that description
   # apply for connections created with EventMachine#connect.
   #
+<<<<<<< HEAD:lib/eventmachine.rb
   # === Usage Example
   #
   # Here's a program which connects to a web server, sends a naive
@@ -649,6 +679,9 @@ module EventMachine
   # #post_init method will be called _inside_ the call to #super that you will
   # make in your #initialize method (if you provide one).
   #
+=======
+  # :include: docs/examples/CLIENT.rdoc
+>>>>>>> stash commit for doc changes thus far:lib/eventmachine.rb
   #--
   # EventMachine::connect initiates a TCP connection to a remote
   # server and sets up event-handling for the connection.
@@ -716,6 +749,7 @@ module EventMachine
   #
   # To detach the file descriptor, use EventMachine::Connection#detach
   #
+<<<<<<< HEAD:lib/eventmachine.rb
   # === Usage Example
   #
   #  module SimpleHttpClient
@@ -748,6 +782,9 @@ module EventMachine
   #    EM.attach $sock, SimpleHttpClient, $sock
   #  }
   #
+=======
+  # :include: docs/examples/ATTACH.rdoc
+>>>>>>> stash commit for doc changes thus far:lib/eventmachine.rb
   #--
   # Thanks to Riham Aldakkak (eSpace Technologies) for the initial patch
   def  EventMachine::attach io, handler=nil, *args

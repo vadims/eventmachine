@@ -1,5 +1,4 @@
-LEGAL NOTICE INFORMATION
-------------------------
+== LEGAL NOTICE INFORMATION
 
 EventMachine is Copyright (C) 2006-07 by Francis Cianfrocca.
 
@@ -10,8 +9,6 @@ software as long as you comply with either the terms of the GPL
 
 Your use of all the files in this distribution is controlled by these
 license terms, except for those files specifically mentioned below:
-
-
 
 setup.rb
 	This file is Copyright (C) 2000-2005 by Minero Aoki

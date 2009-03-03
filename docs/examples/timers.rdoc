@@ -1,0 +1,27 @@
+=== One-Shot Timers
+
+This example shows how easy timers are to use. Observe that two timers are
+initiated simultaneously. Also, notice that the event loop will continue
+to run even after the second timer event is processed, since there was
+no call to EventMachine#stop_event_loop. There will be no activity, of
+course, since no network clients or servers are defined. Stop the program
+with Ctrl-C.
+
+ require 'rubygems'
+ require 'eventmachine'
+
+ EventMachine::run {
+   puts "Starting the run now: #{Time.now}"
+   EventMachine::add_timer 5, proc { puts "Executing timer event: #{Time.now}" }
+   EventMachine::add_timer( 10 ) { puts "Executing timer event: #{Time.now}" }
+ }
+
+=== Periodic Timers
+
+The following sample program will write a dollar-sign to stderr every five seconds.
+(Of course if the program defined network clients and/or servers, they would
+be doing their work while the periodic timer is counting off.)
+
+ EventMachine::run {
+   EventMachine::add_periodic_timer( 5 ) { $stderr.write "$" }
+ }

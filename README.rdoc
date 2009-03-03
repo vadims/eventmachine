@@ -11,8 +11,19 @@ Email:: gmail address: garbagecat10
 EventMachine is copyrighted free software made available under the terms
 of either the GPL or Ruby's License. See the file COPYING for full licensing
 information.
-See EventMachine and EventMachine::Connection for documentation and
-usage examples.
+
+== References
+
+* Reactor Core: EventMachine
+* Connections: EventMachine::Connection
+* Examples: docs/examples.rdoc
+* Features: docs/features.rdoc
+* Protocols: Protocols[link:docs/protocols.rdoc]
+* Release Notes: RELEASE_NOTES
+* Change Log: ChangeLog[link:docs/ChangeLog]
+* TODO: TODO[link:docs/TODO]
+
+== Description
 
 EventMachine implements a fast, single-threaded engine for arbitrary network
 communications. It's extremely easy to use in Ruby. EventMachine wraps all
@@ -79,3 +90,8 @@ Here's a fully-functional echo server written with EventMachine:
  EventMachine::run {
    EventMachine::start_server "127.0.0.1", 8081, EchoServer
  }
+
+:include: docs/install.rdoc
+:include: docs/introduction.rdoc
+
+See link:docs/examples.rdoc for more usage samples.
