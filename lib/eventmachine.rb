@@ -1,10 +1,3 @@
-#--
-<<<<<<< HEAD:lib/eventmachine.rb
-#
-=======
-# $Id$
-#++
->>>>>>> stash commit for doc changes thus far:lib/eventmachine.rb
 # Author:: Francis Cianfrocca (gmail: blackhedd)
 # Homepage::  http://rubyeventmachine.com
 # Date:: 8 Apr 2006
@@ -94,91 +87,7 @@ require 'shellwords'
 #-- Additional requires are at the BOTTOM of this file, because they
 #-- depend on stuff defined in here. Refactor that someday.
 
-<<<<<<< HEAD:lib/eventmachine.rb
-# == Introduction
-# EventMachine provides a fast, lightweight framework for implementing
-# Ruby programs that can use the network to communicate with other
-# processes. Using EventMachine, Ruby programmers can easily connect
-# to remote servers and act as servers themselves. EventMachine does not
-# supplant the Ruby IP libraries. It does provide an alternate technique
-# for those applications requiring better performance, scalability,
-# and discipline over the behavior of network sockets, than is easily
-# obtainable using the built-in libraries, especially in applications
-# which are structurally well-suited for the event-driven programming model.
-#
-# EventMachine provides a perpetual event-loop which your programs can
-# start and stop. Within the event loop, TCP network connections are
-# initiated and accepted, based on EventMachine methods called by your
-# program. You also define callback methods which are called by EventMachine
-# when events of interest occur within the event-loop.
-#
-# User programs will be called back when the following events occur:
-# * When the event loop accepts network connections from remote peers
-# * When data is received from network connections
-# * When connections are closed, either by the local or the remote side
-# * When user-defined timers expire
-#
-# == Usage example
-#
-# Here's a fully-functional echo server implemented in EventMachine:
-# 
-#  require 'rubygems'
-#  require 'eventmachine'
-#
-#  module EchoServer
-#    def receive_data data
-#      send_data ">>>you sent: #{data}"
-#      close_connection if data =~ /quit/i
-#    end
-#  end
-#
-#  EventMachine::run {
-#    EventMachine::start_server "192.168.0.100", 8081, EchoServer
-#  }
-# 
-# What's going on here? Well, we have defined the module EchoServer to
-# implement the semantics of the echo protocol (more about that shortly).
-# The last three lines invoke the event-machine itself, which runs forever
-# unless one of your callbacks terminates it. The block that you supply
-# to EventMachine::run contains code that runs immediately after the event
-# machine is initialized and before it starts looping. This is the place
-# to open up a TCP server by specifying the address and port it will listen
-# on, together with the module that will process the data.
-# 
-# Our EchoServer is extremely simple as the echo protocol doesn't require
-# much work. Basically you want to send back to the remote peer whatever
-# data it sends you. We'll dress it up with a little extra text to make it
-# interesting. Also, we'll close the connection in case the received data
-# contains the word "quit."
-# 
-# So what about this module EchoServer? Well, whenever a network connection
-# (either a client or a server) starts up, EventMachine instantiates an anonymous
-# class, that your module has been mixed into. Exactly one of these class
-# instances is created for each connection. Whenever an event occurs on a
-# given connection, its corresponding object automatically calls specific
-# instance methods which your module may redefine. The code in your module
-# always runs in the context of a class instance, so you can create instance
-# variables as you wish and they will be carried over to other callbacks
-# made on that same connection.
-# 
-# Looking back up at EchoServer, you can see that we've defined the method
-# receive_data which (big surprise) is called whenever data has been received
-# from the remote end of the connection. Very simple. We get the data
-# (a String object) and can do whatever we wish with it. In this case,
-# we use the method send_data to return the received data to the caller,
-# with some extra text added in. And if the user sends the word "quit,"
-# we'll close the connection with (naturally) close_connection.
-# (Notice that closing the connection doesn't terminate the processing loop,
-# or change the fact that your echo server is still accepting connections!) 
-#
-# == Questions and Futures
-# Would it be useful for EventMachine to incorporate the Observer pattern
-# and make use of the corresponding Ruby <tt>observer</tt> package?
-# Interesting thought.
-#
-=======
 # :include: docs/INTRODUCTION.rdoc
->>>>>>> stash commit for doc changes thus far:lib/eventmachine.rb
 module EventMachine
   class FileNotFoundException < Exception # :nodoc:
   end
@@ -187,30 +96,6 @@ module EventMachine
     attr_reader :threadpool # :nodoc:
   end
 
-
-	# EventMachine::run initializes and runs an event loop.
-	# This method only returns if user-callback code calls stop_event_loop.
-	# Use the supplied block to define your clients and servers.
-	# The block is called by EventMachine::run immediately after initializing
-	# its internal event loop but <i>before</i> running the loop.
-	# Therefore this block is the right place to call start_server if you
-	# want to accept connections from remote clients.
-	#
-	# For programs that are structured as servers, it's usually appropriate
-	# to start an event loop by calling EventMachine::run, and let it
-	# run forever. It's also possible to use EventMachine::run to make a single
-	# client-connection to a remote server, process the data flow from that
-	# single connection, and then call stop_event_loop to force EventMachine::run
-	# to return. Your program will then continue from the point immediately
-	# following the call to EventMachine::run.
-	#
-	# You can of course do both client and servers simultaneously in the same program.
-	# One of the strengths of the event-driven programming model is that the
-	# handling of network events on many different connections will be interleaved,
-	# and scheduled according to the actual events themselves. This maximizes
-	# efficiency.
-	#
-<<<<<<< HEAD:lib/eventmachine.rb
 	# === Server usage example
 	#
 	# See EventMachine.start_server
@@ -219,8 +104,6 @@ module EventMachine
 	#
 	# See EventMachine.connect
 	#
-=======
->>>>>>> stash commit for doc changes thus far:lib/eventmachine.rb
 	#--
 	# Obsoleted the use_threads mechanism.
 	# 25Nov06: Added the begin/ensure block. We need to be sure that release_machine
@@ -272,7 +155,7 @@ module EventMachine
 			raise @wrapped_exception if @wrapped_exception
 		end
 	end
-
+	
 
     # Sugars a common use case. Will pass the given block to #run, but will terminate
     # the reactor loop and exit the function as soon as the code in the block completes.
@@ -333,25 +216,7 @@ module EventMachine
   # There is no built-in limit to the number of timers that can be outstanding at
   # any given time.
   #
-<<<<<<< HEAD:lib/eventmachine.rb
-  # === Usage example
-  #
-  # This example shows how easy timers are to use. Observe that two timers are
-  # initiated simultaneously. Also, notice that the event loop will continue
-  # to run even after the second timer event is processed, since there was
-  # no call to EventMachine#stop_event_loop. There will be no activity, of
-  # course, since no network clients or servers are defined. Stop the program
-  # with Ctrl-C.
-  #
-  #  EventMachine::run {
-  #    puts "Starting the run now: #{Time.now}"
-  #    EventMachine::add_timer 5, proc { puts "Executing timer event: #{Time.now}" }
-  #    EventMachine::add_timer( 10 ) { puts "Executing timer event: #{Time.now}" }
-  #  }
-  #
-=======
   # :include: docs/examples/TIMERS.rdoc
->>>>>>> stash commit for doc changes thus far:lib/eventmachine.rb
   #
   # Also see EventMachine::Timer
   #--
@@ -373,24 +238,7 @@ module EventMachine
   # This method schedules execution of the given block repeatedly, at intervals
   # of time <i>at least</i> as great as the number of seconds given in the first
   # parameter to the call.
-<<<<<<< HEAD:lib/eventmachine.rb
-  # 
-  # === Usage example
-  #
-  # The following sample program will write a dollar-sign to stderr every five seconds.
-  # (Of course if the program defined network clients and/or servers, they would
-  # be doing their work while the periodic timer is counting off.)
-  #
-  #  EventMachine::run {
-  #    EventMachine::add_periodic_timer( 5 ) { $stderr.write "$" }
-  #  }
-  #
-  #
-  # Also see EventMachine::PeriodicTimer
-  #
-=======
   # :include: docs/examples/TIMERS.rdoc
->>>>>>> stash commit for doc changes thus far:lib/eventmachine.rb
   def EventMachine::add_periodic_timer *args, &block
     interval = args.shift
     code = args.shift || block
@@ -422,47 +270,7 @@ module EventMachine
   # will return and program flow will resume from the statement
   # following EventMachine::run call.
   #
-<<<<<<< HEAD:lib/eventmachine.rb
-  # === Usage example
-  #
-  #  require 'rubygems'
-  #  require 'eventmachine'
-  #
-  #  module Redmond
-  #    def post_init
-  #      puts "We're sending a dumb HTTP request to the remote peer."
-  #      send_data "GET / HTTP/1.1\r\nHost: www.microsoft.com\r\n\r\n"
-  #    end
-  #  
-  #    def receive_data data
-  #      puts "We received #{data.length} bytes from the remote peer."
-  #      puts "We're going to stop the event loop now."
-  #      EventMachine::stop_event_loop
-  #    end
-  #  
-  #    def unbind
-  #      puts "A connection has terminated."
-  #    end
-  #  end
-  #  
-  #  puts "We're starting the event loop now."
-  #  EventMachine::run {
-  #    EventMachine::connect "www.microsoft.com", 80, Redmond
-  #  }
-  #  puts "The event loop has stopped."
-  #  
-  # This program will produce approximately the following output:
-  #
-  #  We're starting the event loop now.
-  #  We're sending a dumb HTTP request to the remote peer.
-  #  We received 1440 bytes from the remote peer.
-  #  We're going to stop the event loop now.
-  #  A connection has terminated.
-  #  The event loop has stopped.
-  #
-=======
   # :include: docs/examples/EVENT_LOOP.rdoc
->>>>>>> stash commit for doc changes thus far:lib/eventmachine.rb
   #
   def EventMachine::stop_event_loop
     EventMachine::stop
@@ -513,51 +321,7 @@ module EventMachine
   # can specify a different handler module and thus implement a different
   # network protocol from all the others.
   #
-<<<<<<< HEAD:lib/eventmachine.rb
-  # === Usage example
-  # Here is an example of a server that counts lines of input from the remote
-  # peer and sends back the total number of lines received, after each line.
-  # Try the example with more than one client connection opened via telnet,
-  # and you will see that the line count increments independently on each
-  # of the client connections. Also very important to note, is that the
-  # handler for the receive_data function, which our handler redefines, may
-  # not assume that the data it receives observes any kind of message boundaries.
-  # Also, to use this example, be sure to change the server and port parameters
-  # to the start_server call to values appropriate for your environment.
-  #
-  #  require 'rubygems'
-  #  require 'eventmachine'
-  #
-  #  module LineCounter
-  #    MaxLinesPerConnection = 10
-  #  
-  #    def post_init
-  #      puts "Received a new connection"
-  #      @data_received = ""
-  #      @line_count = 0
-  #    end
-  #  
-  #    def receive_data data
-  #      @data_received << data
-  #      while @data_received.slice!( /^[^\n]*[\n]/m )
-  #        @line_count += 1
-  #        send_data "received #{@line_count} lines so far\r\n"
-  #        @line_count == MaxLinesPerConnection and close_connection_after_writing
-  #      end
-  #    end
-  #  end
-  #  
-  #  EventMachine::run {
-  #    host,port = "192.168.0.100", 8090
-  #    EventMachine::start_server host, port, LineCounter
-  #    puts "Now accepting connections on address #{host}, port #{port}..."
-  #    EventMachine::add_periodic_timer( 10 ) { $stderr.write "*" }
-  #  }
-  #  
-  #
-=======
   # :include: docs/examples/SERVER.rdoc
->>>>>>> stash commit for doc changes thus far:lib/eventmachine.rb
   def EventMachine::start_server server, port=nil, handler=nil, *args, &block
     
     begin
@@ -625,63 +389,7 @@ module EventMachine
   # of the handler Module. All of the details given in that description
   # apply for connections created with EventMachine#connect.
   #
-<<<<<<< HEAD:lib/eventmachine.rb
-  # === Usage Example
-  #
-  # Here's a program which connects to a web server, sends a naive
-  # request, parses the HTTP header of the response, and then
-  # (antisocially) ends the event loop, which automatically drops the connection
-  # (and incidentally calls the connection's unbind method).
-  # 
-  #  module DumbHttpClient
-  #    def post_init
-  #      send_data "GET / HTTP/1.1\r\nHost: _\r\n\r\n"
-  #      @data = ""
-  #    end
-  #  
-  #    def receive_data data
-  #      @data << data
-  #      if  @data =~ /[\n][\r]*[\n]/m
-  #        puts "RECEIVED HTTP HEADER:"
-  #        $`.each {|line| puts ">>> #{line}" }
-  #  
-  #        puts "Now we'll terminate the loop, which will also close the connection"
-  #        EventMachine::stop_event_loop
-  #      end
-  #    end
-  #  
-  #    def unbind
-  #      puts "A connection has terminated"
-  #    end
-  #  end
-  #  
-  #  EventMachine::run {
-  #    EventMachine::connect "www.bayshorenetworks.com", 80, DumbHttpClient
-  #  }
-  #  puts "The event loop has ended"
-  #  
-  #
-  # There are times when it's more convenient to define a protocol handler
-  # as a Class rather than a Module. Here's how to do this:
-  #
-  #  class MyProtocolHandler < EventMachine::Connection
-  #    def initialize *args
-  #      super
-  #      # whatever else you want to do here
-  #    end
-  #    
-  #    #.......your other class code
-  #  end
-  #
-  # If you do this, then an instance of your class will be instantiated to handle
-  # every network connection created by your code or accepted by servers that you
-  # create. If you redefine #post_init in your protocol-handler class, your
-  # #post_init method will be called _inside_ the call to #super that you will
-  # make in your #initialize method (if you provide one).
-  #
-=======
   # :include: docs/examples/CLIENT.rdoc
->>>>>>> stash commit for doc changes thus far:lib/eventmachine.rb
   #--
   # EventMachine::connect initiates a TCP connection to a remote
   # server and sets up event-handling for the connection.
@@ -749,42 +457,7 @@ module EventMachine
   #
   # To detach the file descriptor, use EventMachine::Connection#detach
   #
-<<<<<<< HEAD:lib/eventmachine.rb
-  # === Usage Example
-  #
-  #  module SimpleHttpClient
-  #    def initialize sock
-  #      @sock = sock
-  #    end
-  #
-  #    def notify_readable
-  #      header = @sock.readline
-  #
-  #      if header == "\r\n"
-  #        # detach returns the file descriptor number (fd == @sock.fileno)
-  #        fd = detach
-  #      end
-  #    rescue EOFError
-  #      detach
-  #    end
-  #
-  #    def unbind
-  #      EM.next_tick do
-  #        # socket is detached from the eventloop, but still open
-  #        data = @sock.read
-  #      end
-  #    end
-  #  end
-  #
-  #  EM.run{
-  #    $sock = TCPSocket.new('site.com', 80)
-  #    $sock.write("GET / HTTP/1.0\r\n\r\n")
-  #    EM.attach $sock, SimpleHttpClient, $sock
-  #  }
-  #
-=======
   # :include: docs/examples/ATTACH.rdoc
->>>>>>> stash commit for doc changes thus far:lib/eventmachine.rb
   #--
   # Thanks to Riham Aldakkak (eSpace Technologies) for the initial patch
   def  EventMachine::attach io, handler=nil, *args
